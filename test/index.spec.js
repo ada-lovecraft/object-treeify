@@ -28,6 +28,7 @@ describe('Testing Treeify', () => {
     ].join('\n'));
   });
 
+
   it('Testing Not Joined Custom', () => {
     expect(treeify({
       vendor: {
@@ -47,7 +48,7 @@ describe('Testing Treeify', () => {
       spacerNoNeighbour: '    ',
       spacerNeighbour: '¦   ',
       keyNoNeighbour: '\'-- ',
-      keyNeighbour: '+-- '
+      keyNeighbour: '+-- ',
     })).to.deep.equal([
       '+-- vendor',
       '¦   \'-- index.js',
@@ -80,6 +81,34 @@ describe('Testing Treeify', () => {
       '└─ apples',
       '   ├─ gala',
       '   └─ pink lady'
+    ].join('\n'));
+  });
+
+  it('Testing Comprehensive Key Heirarchy Display', () => {
+    expect(treeify({
+      foo: {
+        bar: 'baz',
+        fizz: {
+          buzz: 123
+        },
+      },
+      a: {
+        b: {
+          c: {
+            d: [1,2,3,4]
+          }
+        }
+      }
+    }, { hideValues: true
+    } )).to.deep.equal([
+      '├─ foo',
+      '│  ├─ bar',
+      '│  └─ fizz',
+      '│     └─ buzz',
+      '└─ a',
+      '   └─ b',
+      '      └─ c',
+      '         └─ d'
     ].join('\n'));
   });
 

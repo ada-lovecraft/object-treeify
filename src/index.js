@@ -9,15 +9,17 @@ const buildCtx = (opts) => {
     keyNoNeighbour: '└─ ',
     keyNeighbour: '├─ ',
     sortFn: null,
+    hideValues: false,
     ...opts
   };
-  assert(Object.keys(ctx).length === 6, 'Unexpected Option(s) provided');
+  assert(Object.keys(ctx).length === 7, 'Unexpected Option(s) provided');
   assert(typeof ctx.joined === 'boolean', 'Option "joined" has invalid format');
   assert(typeof ctx.spacerNoNeighbour === 'string', 'Option "spacerNoNeighbour" has invalid format');
   assert(typeof ctx.spacerNeighbour === 'string', 'Option "spacerNeighbour" has invalid format');
   assert(typeof ctx.keyNoNeighbour === 'string', 'Option "keyNoNeighbour" has invalid format');
   assert(typeof ctx.keyNeighbour === 'string', 'Option "keyNeighbour" has invalid format');
   assert(typeof ctx.sortFn === 'function' || ctx.sortFn === null, 'Option "sortFn" has invalid format');
+  assert(typeof ctx.hideValues === 'boolean', 'Option "hideValues" has invalid format')
   return ctx;
 };
 
@@ -39,7 +41,7 @@ module.exports = (tree, opts = {}) => {
       neighbours.slice(0, key.length - 1).map((n) => (n ? ctx.spacerNeighbour : ctx.spacerNoNeighbour)).join(''),
       neighbours[key.length - 1] ? ctx.keyNeighbour : ctx.keyNoNeighbour,
       key[key.length - 1],
-      ['boolean', 'string', 'number'].includes(typeof node) ? `: ${node}` : ''
+      ['boolean', 'string', 'number'].includes(typeof node) && !ctx.hideValues ? `: ${node}` : ''
     ].join(''));
 
     if (node instanceof Object && !Array.isArray(node)) {
